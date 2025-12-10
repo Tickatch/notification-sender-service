@@ -1,10 +1,10 @@
-package com.tickatch.projectinterface;
+package com.tickatch.notificationsenderservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProjectInterfaceApplicationTests {
+class NotificationSenderServiceApplicationTests {
 
   @Test
   void contextLoads() {}
