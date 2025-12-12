@@ -49,6 +49,19 @@ spring:
         max-interval: 2000          # 최대 재시도 간격 (2초)
         multiplier: 1.1             # 재시도 간격 증가율
 
+  # ===== 메일 전송 설정 =====
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tickatch1211
+    password: gjkxaxarpfacsvuz
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 # ========================================
 # Eureka Client 설정
 # ========================================
@@ -83,3 +96,14 @@ eureka:
 # ========================================
 server:
   port: ${SERVER_PORT:8080}
+
+# ========================================
+# SMS 설정
+# ========================================
+sms:
+  api:
+    key: ${SMS_API_KEY}
+    secret: ${SMS_API_SECRET}
+    domain: ${SMS_API_DOMAIN}
+  send:
+    from: ${SMS_SEND_FROM}
