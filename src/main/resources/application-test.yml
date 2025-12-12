@@ -6,10 +6,10 @@ spring:
     config:
       enabled: false
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: tickatch1211
-    password: gjkxaxarpfacsvuz
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -24,3 +24,7 @@ sms:
     domain: ${SMS_API_DOMAIN}
   send:
     from: ${SMS_SEND_FROM}
+
+slack:
+  bot:
+    token: ${SLACK_BOT_TOKEN}
