@@ -32,6 +32,12 @@ public class SmsSendException extends BusinessException {
     super(errorCode, errorArgs);
   }
 
+  /**
+   * SMS 전송 예외 생성자.
+   *
+   * @param errorCode SMS 전송 예외 코드
+   * @param throwable 예외 원인
+   */
   public SmsSendException(ErrorCode errorCode, Throwable throwable) {
     super(errorCode, throwable);
   }

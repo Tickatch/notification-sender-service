@@ -32,6 +32,12 @@ public class EmailSendException extends BusinessException {
     super(errorCode, errorArgs);
   }
 
+  /**
+   * 이메일 전송 예외 생성자.
+   *
+   * @param errorCode 이메일 전송 예외 코드
+   * @param throwable 예외 원인
+   */
   public EmailSendException(ErrorCode errorCode, Throwable throwable) {
     super(errorCode, throwable);
   }
