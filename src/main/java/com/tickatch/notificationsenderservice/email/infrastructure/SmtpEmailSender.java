@@ -1,7 +1,7 @@
 package com.tickatch.notificationsenderservice.email.infrastructure;
 
-import com.tickatch.notificationsenderservice.email.domain.EmailSendRequest;
 import com.tickatch.notificationsenderservice.email.domain.EmailSender;
+import com.tickatch.notificationsenderservice.email.domain.dto.EmailSendRequest;
 import com.tickatch.notificationsenderservice.email.domain.exception.EmailSendErrorCode;
 import com.tickatch.notificationsenderservice.email.domain.exception.EmailSendException;
 import jakarta.mail.MessagingException;
