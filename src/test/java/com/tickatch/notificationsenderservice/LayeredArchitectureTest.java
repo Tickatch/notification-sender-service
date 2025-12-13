@@ -47,7 +47,8 @@ class LayeredArchitectureTest {
         // global 패키지는 모든 계층에서 자유롭게 접근 가능하도록 제외
         .ignoreDependency(
             DescribedPredicate.alwaysTrue(),
-            JavaClass.Predicates.resideInAPackage("com.tickatch.notificationsenderservice.global.."))
+            JavaClass.Predicates.resideInAPackage(
+                "com.tickatch.notificationsenderservice.global.."))
         // 빈 레이어 허용
         .allowEmptyShould(true)
         .check(classes);
