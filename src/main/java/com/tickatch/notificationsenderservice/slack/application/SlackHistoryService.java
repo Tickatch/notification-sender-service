@@ -21,8 +21,8 @@ public class SlackHistoryService {
     return smsSendHistoryRepository.save(history);
   }
 
-  public SlackSendHistory createChanelMessageHistory(String chanelId, String content) {
-    SlackSendHistory history = SlackSendHistory.createChannel(chanelId, content);
+  public SlackSendHistory createChannelMessageHistory(String channelId, String content) {
+    SlackSendHistory history = SlackSendHistory.createChannel(channelId, content);
 
     return smsSendHistoryRepository.save(history);
   }

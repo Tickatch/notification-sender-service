@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.tickatch.notificationsenderservice.slack.domain.dto.SlackChanelSendRequest;
+import com.tickatch.notificationsenderservice.slack.domain.dto.SlackChannelSendRequest;
 import com.tickatch.notificationsenderservice.slack.domain.dto.SlackDmSendRequest;
 import com.tickatch.notificationsenderservice.slack.domain.exception.SlackSendException;
 import com.tickatch.notificationsenderservice.slack.infrastructure.dto.SlackConversationOpenRequest;
@@ -74,9 +74,9 @@ class SlackMessageSenderTest {
     SlackMessageResponse response = new SlackMessageResponse(true, null);
     given(slackFeignClient.sendMessageToChannel(any())).willReturn(response);
 
-    SlackChanelSendRequest request = new SlackChanelSendRequest("C12345", "Alert!");
+    SlackChannelSendRequest request = new SlackChannelSendRequest("C12345", "Alert!");
 
-    assertThatCode(() -> slackMessageSender.sendChanelMessage(request)).doesNotThrowAnyException();
+    assertThatCode(() -> slackMessageSender.sendChannelMessage(request)).doesNotThrowAnyException();
   }
 
   @Test
@@ -84,9 +84,9 @@ class SlackMessageSenderTest {
     SlackMessageResponse response = new SlackMessageResponse(false, "not_in_channel");
     given(slackFeignClient.sendMessageToChannel(any())).willReturn(response);
 
-    SlackChanelSendRequest request = new SlackChanelSendRequest("C12345", "Alert!");
+    SlackChannelSendRequest request = new SlackChannelSendRequest("C12345", "Alert!");
 
-    assertThatThrownBy(() -> slackMessageSender.sendChanelMessage(request))
+    assertThatThrownBy(() -> slackMessageSender.sendChannelMessage(request))
         .isInstanceOf(SlackSendException.class);
   }
 }
