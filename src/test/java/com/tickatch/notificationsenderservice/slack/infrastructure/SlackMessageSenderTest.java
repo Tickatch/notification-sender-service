@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.tickatch.notificationsenderservice.slack.domain.SlackChanelSendRequest;
-import com.tickatch.notificationsenderservice.slack.domain.SlackDmSendRequest;
+import com.tickatch.notificationsenderservice.slack.domain.dto.SlackChanelSendRequest;
+import com.tickatch.notificationsenderservice.slack.domain.dto.SlackDmSendRequest;
 import com.tickatch.notificationsenderservice.slack.domain.exception.SlackSendException;
 import com.tickatch.notificationsenderservice.slack.infrastructure.dto.SlackConversationOpenRequest;
 import com.tickatch.notificationsenderservice.slack.infrastructure.dto.SlackMessageRequest;

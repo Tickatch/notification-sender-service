@@ -1,8 +1,8 @@
 package com.tickatch.notificationsenderservice.slack.infrastructure;
 
-import com.tickatch.notificationsenderservice.slack.domain.SlackChanelSendRequest;
-import com.tickatch.notificationsenderservice.slack.domain.SlackDmSendRequest;
 import com.tickatch.notificationsenderservice.slack.domain.SlackSender;
+import com.tickatch.notificationsenderservice.slack.domain.dto.SlackChanelSendRequest;
+import com.tickatch.notificationsenderservice.slack.domain.dto.SlackDmSendRequest;
 import com.tickatch.notificationsenderservice.slack.domain.exception.SlackSendErrorCode;
 import com.tickatch.notificationsenderservice.slack.domain.exception.SlackSendException;
 import com.tickatch.notificationsenderservice.slack.infrastructure.dto.AbstractSlackResponse;

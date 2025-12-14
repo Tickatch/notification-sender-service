@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.slack.domain;
+package com.tickatch.notificationsenderservice.slack.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
