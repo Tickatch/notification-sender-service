@@ -27,10 +27,10 @@ public class SlackHistoryService {
     return smsSendHistoryRepository.save(history);
   }
 
-  public void markAsSuccess(Long historyId, String smtpResponse) {
+  public void markAsSuccess(Long historyId) {
     SlackSendHistory history = smsHistoryQueryService.find(historyId);
 
-    history.markAsSuccess(smtpResponse);
+    history.markAsSuccess();
 
     smsSendHistoryRepository.save(history);
   }

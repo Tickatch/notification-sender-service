@@ -21,7 +21,6 @@ public interface SlackSendHistoryRepository extends Repository<SlackSendHistory,
         :keyword IS NULL OR (
             upper(sh.slackUserId) LIKE CONCAT('%', upper(:keyword), '%')
             OR upper(sh.channelId) LIKE CONCAT('%', upper(:keyword), '%')
-            OR upper(sh.senderResponse) LIKE CONCAT('%', upper(:keyword), '%')
             OR upper(sh.errorMessage) LIKE CONCAT('%', upper(:keyword), '%')
         )
     )

@@ -61,8 +61,8 @@ class SlackHistoryQueryServiceTest {
     history9 = createCm("C12345678", "테스트 메시지");
     history10 = createCm("C12345678", "테스트 메시지");
 
-    history5.markAsSuccess("success");
-    history6.markAsSuccess("success");
+    history5.markAsSuccess();
+    history6.markAsSuccess();
     history7.markAsFailed("failed");
     history8.markAsFailed("failed");
 
@@ -151,17 +151,6 @@ class SlackHistoryQueryServiceTest {
 
     assertThat(histories.getContent())
         .containsExactlyInAnyOrder(history6, history7, history8, history9, history10);
-  }
-
-  @Test
-  void searchBySenderResponse() {
-    SlackSendHistorySearchCondition condition =
-        new SlackSendHistorySearchCondition(null, null, "success", null, null);
-    Pageable pageable = PageRequest.of(0, 10);
-
-    Page<SlackSendHistory> histories = slackHistoryQueryService.search(condition, pageable);
-
-    assertThat(histories.getContent()).containsExactlyInAnyOrder(history5, history6);
   }
 
   @Test

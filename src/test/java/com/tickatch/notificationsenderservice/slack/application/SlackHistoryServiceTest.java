@@ -1,5 +1,6 @@
 package com.tickatch.notificationsenderservice.slack.application;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tickatch.notificationsenderservice.slack.domain.SlackSendHistory;
@@ -50,14 +51,14 @@ class SlackHistoryServiceTest {
 
   @Test
   void markAsSuccess() {
-    slackHistoryService.markAsSuccess(history.getId(), "success");
+    slackHistoryService.markAsSuccess(history.getId());
     em.flush();
     em.clear();
 
     SlackSendHistory found = slackHistoryQueryService.find(history.getId());
 
-    assertThat(found.getSenderResponse()).isEqualTo("success");
     assertThat(found.getStatus()).isEqualTo(SlackSendStatus.SUCCESS);
+    assertThat(found.getSentAt()).isNotNull();
   }
 
   @Test

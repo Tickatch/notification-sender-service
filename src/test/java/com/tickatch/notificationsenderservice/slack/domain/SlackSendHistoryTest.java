@@ -38,10 +38,10 @@ class SlackSendHistoryTest {
 
   @Test
   void markAsSuccess() {
-    history.markAsSuccess("success");
+    history.markAsSuccess();
 
     assertThat(history.getStatus()).isEqualTo(SlackSendStatus.SUCCESS);
-    assertThat(history.getSenderResponse()).isEqualTo("success");
+    assertThat(history.getSentAt()).isNotNull();
   }
 
   @Test

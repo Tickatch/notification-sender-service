@@ -44,9 +44,6 @@ public class SlackSendHistory extends AbstractTimeEntity {
   @Column(columnDefinition = "TEXT")
   private String errorMessage;
 
-  @Column(columnDefinition = "TEXT")
-  private String senderResponse;
-
   private LocalDateTime sentAt;
 
   public static SlackSendHistory createDm(String slackUserId, String message) {
@@ -71,10 +68,9 @@ public class SlackSendHistory extends AbstractTimeEntity {
     return history;
   }
 
-  public void markAsSuccess(String senderResponse) {
+  public void markAsSuccess() {
     this.status = SlackSendStatus.SUCCESS;
     this.sentAt = LocalDateTime.now();
-    this.senderResponse = senderResponse;
   }
 
   public void markAsFailed(String errorMessage) {
