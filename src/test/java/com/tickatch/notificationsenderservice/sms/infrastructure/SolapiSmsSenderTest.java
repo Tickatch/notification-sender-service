@@ -1,11 +1,13 @@
 package com.tickatch.notificationsenderservice.sms.infrastructure;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.tickatch.notificationsenderservice.sms.domain.dto.SmsSendRequest;
 import com.tickatch.notificationsenderservice.sms.domain.exception.SmsSendErrorCode;
@@ -47,9 +49,12 @@ class SolapiSmsSenderTest {
   @Test
   void send() {
     SingleMessageSentResponse response = mock(SingleMessageSentResponse.class);
+    when(response.getStatusMessage()).thenReturn("OK");
     given(messageService.sendOne(any(SingleMessageSendingRequest.class))).willReturn(response);
 
-    smsSender.send(request);
+    String result = smsSender.send(request);
+
+    assertThat(result).isEqualTo("OK");
     verify(messageService, times(1)).sendOne(any(SingleMessageSendingRequest.class));
   }
 

@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.slack.infrastructure.dto;
+package com.tickatch.notificationsenderservice.sms.infrastructure;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,27 +7,27 @@ import java.time.Instant;
 import lombok.Getter;
 
 @Getter
-public class SlackChannelMessageSendRequestEvent extends DomainEvent {
+public class SmsSendRequestEvent extends DomainEvent {
 
-  private final String channelId;
+  private final String phoneNumber;
 
   private final String message;
 
-  public SlackChannelMessageSendRequestEvent(String channelId, String message) {
+  public SmsSendRequestEvent(String phoneNumber, String message) {
     super();
-    this.channelId = channelId;
+    this.phoneNumber = phoneNumber;
     this.message = message;
   }
 
   @JsonCreator
-  public SlackChannelMessageSendRequestEvent(
+  public SmsSendRequestEvent(
       @JsonProperty("eventId") String eventId,
       @JsonProperty("occurredAt") Instant occurredAt,
       @JsonProperty("version") int version,
-      @JsonProperty("channelId") String channelId,
+      @JsonProperty("phoneNumber") String phoneNumber,
       @JsonProperty("message") String message) {
     super(eventId, occurredAt, version);
-    this.channelId = channelId;
+    this.phoneNumber = phoneNumber;
     this.message = message;
   }
 }

@@ -11,6 +11,7 @@ import net.nurigo.sdk.message.exception.NurigoUnknownException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.model.MessageType;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,10 +35,10 @@ public class SolapiSmsSender implements SmsSender {
   }
 
   @Override
-  public void send(SmsSendRequest request) {
+  public String send(SmsSendRequest request) {
     Message message = createMessage(request);
 
-    sendSms(request, message);
+    return sendSms(request, message);
   }
 
   private Message createMessage(SmsSendRequest request) {
@@ -51,13 +52,16 @@ public class SolapiSmsSender implements SmsSender {
     return message;
   }
 
-  private void sendSms(SmsSendRequest request, Message message) {
+  private String sendSms(SmsSendRequest request, Message message) {
     try {
       log.info("SMS 발송 시작: to={}", request.to());
 
-      messageService.sendOne(new SingleMessageSendingRequest(message));
+      SingleMessageSentResponse response =
+          messageService.sendOne(new SingleMessageSendingRequest(message));
 
       log.info("SMS 발송 성공: to={}", request.to());
+
+      return response.getStatusMessage();
     } catch (Exception e) {
       log.error("SMS 발송 실패: to={}", request.to(), e);
       switch (e) {
