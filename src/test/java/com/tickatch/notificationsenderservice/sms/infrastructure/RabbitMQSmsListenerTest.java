@@ -49,7 +49,7 @@ class RabbitMQSmsListenerTest {
     when(smsSender.send(any(SmsSendRequest.class))).thenReturn("OK");
     doNothing().when(smsHistoryService).markAsSuccess(anyLong(), anyString());
 
-    rabbitMQSmsListener.SmsSendRequest(integrationEvent);
+    rabbitMQSmsListener.smsSendRequest(integrationEvent);
 
     verify(smsSender).send(any((SmsSendRequest.class)));
     verify(smsHistoryService).markAsSuccess(anyLong(), anyString());
@@ -70,7 +70,7 @@ class RabbitMQSmsListenerTest {
     doNothing().when(smsHistoryService).markAsFailed(anyLong(), anyString());
     when(messageResolver.resolve(any())).thenReturn("에러 메시지");
 
-    assertThatThrownBy(() -> rabbitMQSmsListener.SmsSendRequest(integrationEvent))
+    assertThatThrownBy(() -> rabbitMQSmsListener.smsSendRequest(integrationEvent))
         .isInstanceOf(SmsSendException.class);
     verify(smsSender).send(any(SmsSendRequest.class));
     verify(smsHistoryService).markAsFailed(anyLong(), anyString());

@@ -43,13 +43,12 @@ class EmailHistoryServiceTest {
 
   @Test
   void markAsSuccess() {
-    emailHistoryService.markAsSuccess(history.getId(), "success");
+    emailHistoryService.markAsSuccess(history.getId());
     em.flush();
     em.clear();
 
     EmailSendHistory found = emailHistoryQueryService.find(history.getId());
 
-    assertThat(found.getSenderResponse()).isEqualTo("success");
     assertThat(found.getStatus()).isEqualTo(EmailSendStatus.SUCCESS);
   }
 

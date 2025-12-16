@@ -45,9 +45,6 @@ public class EmailSendHistory extends AbstractTimeEntity {
   @Column(columnDefinition = "TEXT")
   private String errorMessage;
 
-  @Column(columnDefinition = "TEXT")
-  private String senderResponse;
-
   private LocalDateTime sentAt;
 
   public static EmailSendHistory create(
@@ -63,10 +60,9 @@ public class EmailSendHistory extends AbstractTimeEntity {
     return history;
   }
 
-  public void markAsSuccess(String senderResponse) {
+  public void markAsSuccess() {
     this.status = EmailSendStatus.SUCCESS;
     this.sentAt = LocalDateTime.now();
-    this.senderResponse = senderResponse;
   }
 
   public void markAsFailed(String errorMessage) {

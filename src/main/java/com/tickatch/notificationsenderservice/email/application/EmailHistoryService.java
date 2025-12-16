@@ -22,10 +22,10 @@ public class EmailHistoryService {
     return emailSendHistoryRepository.save(history);
   }
 
-  public void markAsSuccess(Long historyId, String smtpResponse) {
+  public void markAsSuccess(Long historyId) {
     EmailSendHistory history = emailHistoryQueryService.find(historyId);
 
-    history.markAsSuccess(smtpResponse);
+    history.markAsSuccess();
 
     emailSendHistoryRepository.save(history);
   }

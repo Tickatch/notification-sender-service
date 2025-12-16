@@ -24,11 +24,10 @@ class EmailSendHistoryTest {
 
   @Test
   void markAsSuccess() {
-    history.markAsSuccess("success");
+    history.markAsSuccess();
 
     assertThat(history.getStatus()).isEqualTo(EmailSendStatus.SUCCESS);
     assertThat(history.getSentAt()).isNotNull();
-    assertThat(history.getSenderResponse()).isEqualTo("success");
   }
 
   @Test
