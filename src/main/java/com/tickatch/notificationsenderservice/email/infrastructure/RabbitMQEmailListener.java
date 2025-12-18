@@ -37,7 +37,11 @@ public class RabbitMQEmailListener {
 
     EmailSendHistory history =
         emailHistoryService.createHistory(
-            payload.getEmail(), payload.getSubject(), payload.getContent(), payload.isHtml());
+            payload.getNotificationId(),
+            payload.getEmail(),
+            payload.getSubject(),
+            payload.getContent(),
+            payload.isHtml());
 
     send(payload, history.getId());
 

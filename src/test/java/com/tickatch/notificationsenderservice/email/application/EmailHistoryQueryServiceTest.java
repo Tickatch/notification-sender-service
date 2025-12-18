@@ -74,7 +74,7 @@ class EmailHistoryQueryServiceTest {
   }
 
   private EmailSendHistory create(String email, String subject, String content) {
-    EmailSendHistory history = EmailSendHistory.create(email, subject, content, false);
+    EmailSendHistory history = EmailSendHistory.create(1L, email, subject, content, false);
 
     return emailSendHistoryRepository.save(history);
   }

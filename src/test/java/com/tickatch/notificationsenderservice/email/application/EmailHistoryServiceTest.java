@@ -27,7 +27,8 @@ class EmailHistoryServiceTest {
   @BeforeEach
   void setUp() {
     history =
-        emailHistoryService.createHistory("search9@example.com", "테스트 이메일", "테스트 이메일입니다.", false);
+        emailHistoryService.createHistory(
+            1L, "search9@example.com", "테스트 이메일", "테스트 이메일입니다.", false);
 
     em.flush();
     em.clear();
@@ -36,7 +37,8 @@ class EmailHistoryServiceTest {
   @Test
   void createHistory() {
     EmailSendHistory history =
-        emailHistoryService.createHistory("search9@example.com", "테스트 이메일", "테스트 이메일입니다.", false);
+        emailHistoryService.createHistory(
+            1L, "search9@example.com", "테스트 이메일", "테스트 이메일입니다.", false);
 
     assertThat(history.getId()).isNotNull();
   }

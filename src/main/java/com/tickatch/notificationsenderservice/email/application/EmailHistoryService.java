@@ -16,8 +16,9 @@ public class EmailHistoryService {
   private final EmailHistoryQueryService emailHistoryQueryService;
 
   public EmailSendHistory createHistory(
-      String emailAddress, String subject, String content, Boolean isHtml) {
-    EmailSendHistory history = EmailSendHistory.create(emailAddress, subject, content, isHtml);
+      Long notificationId, String emailAddress, String subject, String content, Boolean isHtml) {
+    EmailSendHistory history =
+        EmailSendHistory.create(notificationId, emailAddress, subject, content, isHtml);
 
     return emailSendHistoryRepository.save(history);
   }

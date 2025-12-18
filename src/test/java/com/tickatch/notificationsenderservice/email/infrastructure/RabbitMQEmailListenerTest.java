@@ -40,14 +40,15 @@ class RabbitMQEmailListenerTest {
   @Test
   void emailSendRequest() {
     EmailSendRequestEvent payload =
-        new EmailSendRequestEvent("test@example.com", "테스트 메세지", "테스트 메세지입니다.", false);
+        new EmailSendRequestEvent(1L, "test@example.com", "테스트 메세지", "테스트 메세지입니다.", false);
     when(integrationEvent.getPayloadAs(EmailSendRequestEvent.class)).thenReturn(payload);
 
     EmailSendHistory history =
         EmailSendHistory.create(
-            payload.getEmail(), payload.getSubject(), payload.getContent(), payload.isHtml());
+            1L, payload.getEmail(), payload.getSubject(), payload.getContent(), payload.isHtml());
     ReflectionTestUtils.setField(history, "id", 1L);
-    when(emailHistoryService.createHistory(anyString(), anyString(), anyString(), anyBoolean()))
+    when(emailHistoryService.createHistory(
+            anyLong(), anyString(), anyString(), anyString(), anyBoolean()))
         .thenReturn(history);
 
     doNothing().when(emailSender).send(any(EmailSendRequest.class));
@@ -62,14 +63,15 @@ class RabbitMQEmailListenerTest {
   @Test
   void emailSendRequestIfFailed() {
     EmailSendRequestEvent payload =
-        new EmailSendRequestEvent("test@example.com", "테스트 메세지", "테스트 메세지입니다.", false);
+        new EmailSendRequestEvent(1L, "test@example.com", "테스트 메세지", "테스트 메세지입니다.", false);
     when(integrationEvent.getPayloadAs(EmailSendRequestEvent.class)).thenReturn(payload);
 
     EmailSendHistory history =
         EmailSendHistory.create(
-            payload.getEmail(), payload.getSubject(), payload.getContent(), payload.isHtml());
+            1L, payload.getEmail(), payload.getSubject(), payload.getContent(), payload.isHtml());
     ReflectionTestUtils.setField(history, "id", 1L);
-    when(emailHistoryService.createHistory(anyString(), anyString(), anyString(), anyBoolean()))
+    when(emailHistoryService.createHistory(
+            anyLong(), anyString(), anyString(), anyString(), anyBoolean()))
         .thenReturn(history);
 
     doThrow(new EmailSendException(EmailSendErrorCode.EMAIL_SEND_FAILED))

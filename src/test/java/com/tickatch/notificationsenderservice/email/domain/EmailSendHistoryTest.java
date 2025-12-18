@@ -11,13 +11,13 @@ class EmailSendHistoryTest {
 
   @BeforeEach
   void setUp() {
-    history = EmailSendHistory.create("test@example.com", "테스트 메일", "테스트 메일입니다.", false);
+    history = EmailSendHistory.create(1L, "test@example.com", "테스트 메일", "테스트 메일입니다.", false);
   }
 
   @Test
   void create() {
     EmailSendHistory history =
-        EmailSendHistory.create("test@example.com", "테스트 메일", "테스트 메일입니다.", false);
+        EmailSendHistory.create(1L, "test@example.com", "테스트 메일", "테스트 메일입니다.", false);
 
     assertThat(history.getStatus()).isEqualTo(EmailSendStatus.PENDING);
   }

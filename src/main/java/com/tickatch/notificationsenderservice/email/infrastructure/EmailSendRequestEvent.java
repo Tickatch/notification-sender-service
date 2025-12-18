@@ -9,6 +9,11 @@ import lombok.Getter;
 @Getter
 public class EmailSendRequestEvent extends DomainEvent {
 
+  private static final String AGGREGATE_TYPE = "Notification";
+  private static final String ROUTING_KEY = "email.send";
+
+  private final Long notificationId;
+
   private final String email;
 
   private final String subject;
@@ -17,10 +22,13 @@ public class EmailSendRequestEvent extends DomainEvent {
 
   private final boolean isHtml;
 
-  public EmailSendRequestEvent(String email, String content, String subject, boolean isHtml) {
+  public EmailSendRequestEvent(
+      Long notificationId, String email, String subject, String content, boolean isHtml) {
     super();
+    this.notificationId = notificationId;
     this.email = email;
-    this.subject = this.content = content;
+    this.subject = subject;
+    this.content = content;
     this.isHtml = isHtml;
   }
 
@@ -29,14 +37,26 @@ public class EmailSendRequestEvent extends DomainEvent {
       @JsonProperty("eventId") String eventId,
       @JsonProperty("occurredAt") Instant occurredAt,
       @JsonProperty("version") int version,
+      @JsonProperty("notificationId") Long notificationId,
       @JsonProperty("email") String email,
       @JsonProperty("subject") String subject,
       @JsonProperty("content") String content,
       @JsonProperty("isHtml") boolean isHtml) {
     super(eventId, occurredAt, version);
+    this.notificationId = notificationId;
     this.email = email;
     this.subject = subject;
     this.content = content;
     this.isHtml = isHtml;
+  }
+
+  @Override
+  public String getAggregateType() {
+    return AGGREGATE_TYPE;
+  }
+
+  @Override
+  public String getRoutingKey() {
+    return ROUTING_KEY;
   }
 }

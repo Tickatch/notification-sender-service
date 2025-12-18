@@ -27,6 +27,9 @@ public class EmailSendHistory extends AbstractTimeEntity {
   private Long id;
 
   @Column(nullable = false)
+  private Long notificationId;
+
+  @Column(nullable = false)
   private String emailAddress;
 
   @Column(nullable = false, length = 500)
@@ -48,9 +51,10 @@ public class EmailSendHistory extends AbstractTimeEntity {
   private LocalDateTime sentAt;
 
   public static EmailSendHistory create(
-      String emailAddress, String subject, String content, Boolean isHtml) {
+      Long notificationId, String emailAddress, String subject, String content, Boolean isHtml) {
     EmailSendHistory history = new EmailSendHistory();
 
+    history.notificationId = Objects.requireNonNull(notificationId);
     history.emailAddress = Objects.requireNonNull(emailAddress);
     history.subject = Objects.requireNonNull(subject);
     history.content = Objects.requireNonNull(content);
