@@ -41,14 +41,15 @@ class RabbitMQSlackListenerTest {
   @Test
   void channelMessageSendRequest() {
     SlackChannelMessageSendRequestEvent payload =
-        new SlackChannelMessageSendRequestEvent("C12345678", "테스트 메세지");
+        new SlackChannelMessageSendRequestEvent(1L, "C12345678", "테스트 메세지");
     when(integrationEvent.getPayloadAs(SlackChannelMessageSendRequestEvent.class))
         .thenReturn(payload);
 
     SlackSendHistory history =
-        SlackSendHistory.createChannel(payload.getChannelId(), payload.getMessage());
+        SlackSendHistory.createChannel(
+            payload.getNotificationId(), payload.getChannelId(), payload.getMessage());
     ReflectionTestUtils.setField(history, "id", 1L);
-    when(slackHistoryService.createChannelMessageHistory(anyString(), anyString()))
+    when(slackHistoryService.createChannelMessageHistory(anyLong(), anyString(), anyString()))
         .thenReturn(history);
 
     doNothing().when(slackSender).sendChannelMessage(any((SlackChannelSendRequest.class)));
@@ -63,14 +64,15 @@ class RabbitMQSlackListenerTest {
   @Test
   void channelMessageSendRequestIfFailed() {
     SlackChannelMessageSendRequestEvent payload =
-        new SlackChannelMessageSendRequestEvent("C12345678", "테스트 메세지");
+        new SlackChannelMessageSendRequestEvent(1L, "C12345678", "테스트 메세지");
     when(integrationEvent.getPayloadAs(SlackChannelMessageSendRequestEvent.class))
         .thenReturn(payload);
 
     SlackSendHistory history =
-        SlackSendHistory.createChannel(payload.getChannelId(), payload.getMessage());
+        SlackSendHistory.createChannel(
+            payload.getNotificationId(), payload.getChannelId(), payload.getMessage());
     ReflectionTestUtils.setField(history, "id", 1L);
-    when(slackHistoryService.createChannelMessageHistory(anyString(), anyString()))
+    when(slackHistoryService.createChannelMessageHistory(anyLong(), anyString(), anyString()))
         .thenReturn(history);
 
     doThrow(new SlackSendException(SlackSendErrorCode.SLACK_SEND_FAILED, "실패"))

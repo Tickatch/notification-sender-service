@@ -26,6 +26,9 @@ public class SlackSendHistory extends AbstractTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false)
+  private Long notificationId;
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private SlackMessageType messageType;
@@ -46,23 +49,26 @@ public class SlackSendHistory extends AbstractTimeEntity {
 
   private LocalDateTime sentAt;
 
-  public static SlackSendHistory createDm(String slackUserId, String message) {
+  public static SlackSendHistory createDm(Long notificationId, String slackUserId, String message) {
     SlackSendHistory history = new SlackSendHistory();
 
+    history.notificationId = Objects.requireNonNull(notificationId);
     history.messageType = SlackMessageType.DM;
-    history.slackUserId = slackUserId;
-    history.message = message;
+    history.slackUserId = Objects.requireNonNull(slackUserId);
+    history.message = Objects.requireNonNull(message);
     history.status = SlackSendStatus.PENDING;
 
     return history;
   }
 
-  public static SlackSendHistory createChannel(String channelId, String message) {
+  public static SlackSendHistory createChannel(
+      Long notificationId, String channelId, String message) {
     SlackSendHistory history = new SlackSendHistory();
 
+    history.notificationId = Objects.requireNonNull(notificationId);
     history.messageType = SlackMessageType.CHANNEL;
-    history.channelId = channelId;
-    history.message = message;
+    history.channelId = Objects.requireNonNull(channelId);
+    history.message = Objects.requireNonNull(message);
     history.status = SlackSendStatus.PENDING;
 
     return history;

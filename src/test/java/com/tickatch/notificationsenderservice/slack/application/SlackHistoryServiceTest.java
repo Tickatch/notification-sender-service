@@ -1,6 +1,5 @@
 package com.tickatch.notificationsenderservice.slack.application;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tickatch.notificationsenderservice.slack.domain.SlackSendHistory;
@@ -26,7 +25,7 @@ class SlackHistoryServiceTest {
 
   @BeforeEach
   void setUp() {
-    history = slackHistoryService.createDmHistory("U12345678", "테스트 메시지");
+    history = slackHistoryService.createDmHistory(1L, "U12345678", "테스트 메시지");
 
     em.flush();
     em.clear();
@@ -34,7 +33,7 @@ class SlackHistoryServiceTest {
 
   @Test
   void createDmHistory() {
-    SlackSendHistory history = slackHistoryService.createDmHistory("U12345678", "테스트 메시지");
+    SlackSendHistory history = slackHistoryService.createDmHistory(1L, "U12345678", "테스트 메시지");
 
     assertThat(history.getId()).isNotNull();
     assertThat(history.getSlackUserId()).isEqualTo("U12345678");
@@ -43,7 +42,7 @@ class SlackHistoryServiceTest {
   @Test
   void createChannelMessageHistory() {
     SlackSendHistory history =
-        slackHistoryService.createChannelMessageHistory("C12345678", "테스트 메시지");
+        slackHistoryService.createChannelMessageHistory(1L, "C12345678", "테스트 메시지");
 
     assertThat(history.getId()).isNotNull();
     assertThat(history.getChannelId()).isEqualTo("C12345678");

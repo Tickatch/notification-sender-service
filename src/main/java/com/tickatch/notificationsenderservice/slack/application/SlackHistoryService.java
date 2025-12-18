@@ -15,14 +15,15 @@ public class SlackHistoryService {
 
   private final SlackHistoryQueryService smsHistoryQueryService;
 
-  public SlackSendHistory createDmHistory(String slackUserId, String content) {
-    SlackSendHistory history = SlackSendHistory.createDm(slackUserId, content);
+  public SlackSendHistory createDmHistory(Long notificationId, String slackUserId, String content) {
+    SlackSendHistory history = SlackSendHistory.createDm(notificationId, slackUserId, content);
 
     return smsSendHistoryRepository.save(history);
   }
 
-  public SlackSendHistory createChannelMessageHistory(String channelId, String content) {
-    SlackSendHistory history = SlackSendHistory.createChannel(channelId, content);
+  public SlackSendHistory createChannelMessageHistory(
+      Long notificationId, String channelId, String content) {
+    SlackSendHistory history = SlackSendHistory.createChannel(notificationId, channelId, content);
 
     return smsSendHistoryRepository.save(history);
   }

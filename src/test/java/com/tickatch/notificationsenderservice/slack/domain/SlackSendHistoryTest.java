@@ -13,12 +13,12 @@ class SlackSendHistoryTest {
 
   @BeforeEach
   void setUp() {
-    history = SlackSendHistory.createDm("U12345678", "테스트 DM");
+    history = SlackSendHistory.createDm(1L, "U12345678", "테스트 DM");
   }
 
   @Test
   void createDm() {
-    SlackSendHistory history = SlackSendHistory.createDm("U12345678", "테스트 DM");
+    SlackSendHistory history = SlackSendHistory.createDm(1L, "U12345678", "테스트 DM");
 
     assertThat(history.getMessageType()).isEqualTo(SlackMessageType.DM);
     assertThat(history.getSlackUserId()).isEqualTo("U12345678");
@@ -28,7 +28,7 @@ class SlackSendHistoryTest {
 
   @Test
   void createChannel() {
-    SlackSendHistory history = SlackSendHistory.createChannel("C12345678", "테스트 채널 메시지");
+    SlackSendHistory history = SlackSendHistory.createChannel(1L, "C12345678", "테스트 채널 메시지");
 
     assertThat(history.getMessageType()).isEqualTo(SlackMessageType.CHANNEL);
     assertThat(history.getChannelId()).isEqualTo("C12345678");

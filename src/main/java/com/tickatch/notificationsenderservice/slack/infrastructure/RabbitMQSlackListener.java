@@ -39,7 +39,7 @@ public class RabbitMQSlackListener {
 
     SlackSendHistory history =
         slackHistoryService.createChannelMessageHistory(
-            payload.getChannelId(), payload.getMessage());
+            payload.getNotificationId(), payload.getChannelId(), payload.getMessage());
 
     send(payload, history.getId());
 
