@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.tickatch.notificationsenderservice.sms.domain.SmsSendRequest;
+import com.tickatch.notificationsenderservice.sms.domain.dto.SmsSendRequest;
 import com.tickatch.notificationsenderservice.sms.domain.exception.SmsSendErrorCode;
 import com.tickatch.notificationsenderservice.sms.domain.exception.SmsSendException;
 import net.nurigo.sdk.message.exception.NurigoBadRequestException;

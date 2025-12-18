@@ -16,8 +16,8 @@ import org.springframework.http.HttpStatus;
 public enum SlackSendErrorCode implements ErrorCode {
   SLACK_SEND_UNKNOWN(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SLACK_SEND_UNKNOWN"),
   SLACK_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SLACK_SEND_FAILED"),
-  SLACK_CHANEL_CREATION_FAILED(
-      HttpStatus.INTERNAL_SERVER_ERROR.value(), "SLACK_CHANEL_CREATION_FAILED"),
+  SLACK_CHANNEL_CREATION_FAILED(
+      HttpStatus.INTERNAL_SERVER_ERROR.value(), "SLACK_CHANNEL_CREATION_FAILED"),
   ;
 
   private final int status;
