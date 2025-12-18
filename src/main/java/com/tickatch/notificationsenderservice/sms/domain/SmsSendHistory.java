@@ -26,6 +26,9 @@ public class SmsSendHistory extends AbstractTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false)
+  private Long notificationId;
+
   @Column(nullable = false, length = 20)
   private String phoneNumber;
 
@@ -44,9 +47,10 @@ public class SmsSendHistory extends AbstractTimeEntity {
 
   private LocalDateTime sentAt;
 
-  public static SmsSendHistory create(String phoneNumber, String content) {
+  public static SmsSendHistory create(Long notificationId, String phoneNumber, String content) {
     SmsSendHistory history = new SmsSendHistory();
 
+    history.notificationId = Objects.requireNonNull(notificationId);
     history.phoneNumber = Objects.requireNonNull(phoneNumber);
     history.content = Objects.requireNonNull(content);
     history.status = SmsSendStatus.PENDING;

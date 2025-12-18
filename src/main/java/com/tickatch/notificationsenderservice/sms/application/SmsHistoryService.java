@@ -15,8 +15,8 @@ public class SmsHistoryService {
 
   private final SmsHistoryQueryService smsHistoryQueryService;
 
-  public SmsSendHistory createHistory(String phoneNumber, String content) {
-    SmsSendHistory history = SmsSendHistory.create(phoneNumber, content);
+  public SmsSendHistory createHistory(Long notificationId, String phoneNumber, String content) {
+    SmsSendHistory history = SmsSendHistory.create(notificationId, phoneNumber, content);
 
     return smsSendHistoryRepository.save(history);
   }

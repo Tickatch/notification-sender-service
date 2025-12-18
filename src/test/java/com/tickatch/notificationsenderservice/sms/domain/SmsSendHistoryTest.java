@@ -13,12 +13,12 @@ class SmsSendHistoryTest {
 
   @BeforeEach
   void setUp() {
-    history = SmsSendHistory.create("01012345678", "테스트 SMS");
+    history = SmsSendHistory.create(1L, "01012345678", "테스트 SMS");
   }
 
   @Test
   void create() {
-    SmsSendHistory history = SmsSendHistory.create("01012345678", "테스트 SMS");
+    SmsSendHistory history = SmsSendHistory.create(1L, "01012345678", "테스트 SMS");
 
     assertThat(history.getStatus()).isEqualTo(SmsSendStatus.PENDING);
   }

@@ -39,12 +39,14 @@ class RabbitMQSmsListenerTest {
 
   @Test
   void SmsSendRequest() {
-    SmsSendRequestEvent payload = new SmsSendRequestEvent("01012345678", "테스트 메세지");
+    SmsSendRequestEvent payload = new SmsSendRequestEvent(1L, "01012345678", "테스트 메세지");
     when(integrationEvent.getPayloadAs(SmsSendRequestEvent.class)).thenReturn(payload);
 
-    SmsSendHistory history = SmsSendHistory.create(payload.getPhoneNumber(), payload.getMessage());
+    SmsSendHistory history =
+        SmsSendHistory.create(
+            payload.getNotificationId(), payload.getPhoneNumber(), payload.getMessage());
     ReflectionTestUtils.setField(history, "id", 1L);
-    when(smsHistoryService.createHistory(anyString(), anyString())).thenReturn(history);
+    when(smsHistoryService.createHistory(anyLong(), anyString(), anyString())).thenReturn(history);
 
     when(smsSender.send(any(SmsSendRequest.class))).thenReturn("OK");
     doNothing().when(smsHistoryService).markAsSuccess(anyLong(), anyString());
@@ -57,12 +59,14 @@ class RabbitMQSmsListenerTest {
 
   @Test
   void smsSendRequestIfFailed() {
-    SmsSendRequestEvent payload = new SmsSendRequestEvent("01012345678", "테스트 메세지");
+    SmsSendRequestEvent payload = new SmsSendRequestEvent(1L, "01012345678", "테스트 메세지");
     when(integrationEvent.getPayloadAs(SmsSendRequestEvent.class)).thenReturn(payload);
 
-    SmsSendHistory history = SmsSendHistory.create(payload.getPhoneNumber(), payload.getMessage());
+    SmsSendHistory history =
+        SmsSendHistory.create(
+            payload.getNotificationId(), payload.getPhoneNumber(), payload.getMessage());
     ReflectionTestUtils.setField(history, "id", 1L);
-    when(smsHistoryService.createHistory(anyString(), anyString())).thenReturn(history);
+    when(smsHistoryService.createHistory(anyLong(), anyString(), anyString())).thenReturn(history);
 
     doThrow(new SmsSendException(SmsSendErrorCode.SMS_SEND_FAILED))
         .when(smsSender)

@@ -25,7 +25,7 @@ class SmsHistoryServiceTest {
 
   @BeforeEach
   void setUp() {
-    history = smsHistoryService.createHistory("01012345678", "테스트 SMS");
+    history = smsHistoryService.createHistory(1L, "01012345678", "테스트 SMS");
 
     em.flush();
     em.clear();
@@ -33,7 +33,7 @@ class SmsHistoryServiceTest {
 
   @Test
   void createHistory() {
-    SmsSendHistory history = smsHistoryService.createHistory("01012345678", "테스트 SMS");
+    SmsSendHistory history = smsHistoryService.createHistory(1L, "01012345678", "테스트 SMS");
 
     assertThat(history.getId()).isNotNull();
   }

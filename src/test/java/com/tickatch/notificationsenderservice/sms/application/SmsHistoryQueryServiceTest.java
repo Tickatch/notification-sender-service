@@ -49,16 +49,16 @@ class SmsHistoryQueryServiceTest {
 
   @BeforeAll
   void setUpAll() {
-    history1 = create("01012345678", "테스트 SMS");
-    history2 = create("01012345678", "테스트 SMS");
-    history3 = create("01012345678", "테스트 SMS");
-    history4 = create("01012345678", "테스트 SMS");
-    history5 = create("01012345678", "테스트 SMS");
-    history6 = create("01098765432", "테스트 SMS");
-    history7 = create("01098765432", "테스트 SMS");
-    history8 = create("01098765432", "테스트 SMS");
-    history9 = create("01098765432", "테스트 SMS");
-    history10 = create("01098765432", "테스트 SMS");
+    history1 = create(1L, "01012345678", "테스트 SMS");
+    history2 = create(2L, "01012345678", "테스트 SMS");
+    history3 = create(3L, "01012345678", "테스트 SMS");
+    history4 = create(4L, "01012345678", "테스트 SMS");
+    history5 = create(5L, "01012345678", "테스트 SMS");
+    history6 = create(6L, "01098765432", "테스트 SMS");
+    history7 = create(7L, "01098765432", "테스트 SMS");
+    history8 = create(8L, "01098765432", "테스트 SMS");
+    history9 = create(9L, "01098765432", "테스트 SMS");
+    history10 = create(10L, "01098765432", "테스트 SMS");
 
     history5.markAsSuccess("success");
     history6.markAsSuccess("success");
@@ -71,8 +71,8 @@ class SmsHistoryQueryServiceTest {
     smsSendHistoryRepository.save(history8);
   }
 
-  private SmsSendHistory create(String phoneNumber, String content) {
-    SmsSendHistory history = SmsSendHistory.create(phoneNumber, content);
+  private SmsSendHistory create(Long notificationId, String phoneNumber, String content) {
+    SmsSendHistory history = SmsSendHistory.create(notificationId, phoneNumber, content);
 
     return smsSendHistoryRepository.save(history);
   }

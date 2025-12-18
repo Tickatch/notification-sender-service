@@ -36,7 +36,8 @@ public class RabbitMQSmsListener {
     log.info("SMS 전송 요청 수신 - SMS[to: {}] 전송 시작", payload.getPhoneNumber());
 
     SmsSendHistory history =
-        smsHistoryService.createHistory(payload.getPhoneNumber(), payload.getMessage());
+        smsHistoryService.createHistory(
+            payload.getNotificationId(), payload.getPhoneNumber(), payload.getMessage());
 
     String response = send(payload, history.getId());
 
