@@ -43,25 +43,23 @@ public class RabbitMQEmailListener {
             payload.getContent(),
             payload.isHtml());
 
-    send(payload, history.getId());
-
-    emailHistoryService.markAsSuccess(history.getId());
+    sendAndRecord(payload, history.getId());
   }
 
-  private void send(EmailSendRequestEvent payload, Long historyId) {
+  private void sendAndRecord(EmailSendRequestEvent payload, Long historyId) {
     try {
       emailSender.send(
           new EmailSendRequest(
               payload.getEmail(), payload.getSubject(), payload.getContent(), payload.isHtml()));
 
       log.info("이메일[to: {}] 전송 완료", payload.getEmail());
+
+      emailHistoryService.markAsSuccess(historyId);
     } catch (EmailSendException e) {
       log.error("이메일[to: {}] 전송 실패", payload.getEmail(), e);
 
       emailHistoryService.markAsFailed(
           historyId, messageResolver.resolve(e.getCode(), e.getErrorArgs()));
-
-      throw e;
     }
   }
 }

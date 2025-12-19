@@ -20,16 +20,16 @@ public class EmailSendRequestEvent extends DomainEvent {
 
   private final String content;
 
-  private final boolean isHtml;
+  private final boolean html;
 
   public EmailSendRequestEvent(
-      Long notificationId, String email, String subject, String content, boolean isHtml) {
+      Long notificationId, String email, String subject, String content, boolean html) {
     super();
     this.notificationId = notificationId;
     this.email = email;
     this.subject = subject;
     this.content = content;
-    this.isHtml = isHtml;
+    this.html = html;
   }
 
   @JsonCreator
@@ -41,13 +41,13 @@ public class EmailSendRequestEvent extends DomainEvent {
       @JsonProperty("email") String email,
       @JsonProperty("subject") String subject,
       @JsonProperty("content") String content,
-      @JsonProperty("isHtml") boolean isHtml) {
+      @JsonProperty("html") boolean html) {
     super(eventId, occurredAt, version);
     this.notificationId = notificationId;
     this.email = email;
     this.subject = subject;
     this.content = content;
-    this.isHtml = isHtml;
+    this.html = html;
   }
 
   @Override

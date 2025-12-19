@@ -19,6 +19,12 @@ spring:
     compose:
       lifecycle-management: start_only  # docker 생명 주기 (none, start-only, start-and-stop)
 
+  # ===== default schema 설정 =====
+  jpa:
+    properties:
+      hibernate:
+        default_schema: notification_sender
+
   # ===== Config Server 연동 =====
   config:
     import: optional:configserver:${CONFIG_SERVER_URL:https://www.pinjun.xyz/config}
@@ -98,15 +104,15 @@ server:
   port: ${SERVER_PORT:8080}
 
 # ========================================
-# SMS 설정
+# Mobile 설정
 # ========================================
-sms:
+mobile:
   api:
-    key: ${SMS_API_KEY}
-    secret: ${SMS_API_SECRET}
-    domain: ${SMS_API_DOMAIN}
+    key: ${MOBILE_API_KEY}
+    secret: ${MOBILE_API_SECRET}
+    domain: ${MOBILE_API_DOMAIN}
   send:
-    from: ${SMS_SEND_FROM}
+    from: ${MOBILE_SEND_FROM}
 
 # ========================================
 # Slack 설정

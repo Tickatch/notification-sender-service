@@ -1,5 +1,7 @@
 package com.tickatch.notificationsenderservice.slack.application;
 
+import com.tickatch.notificationsenderservice.global.infrastructure.SendResultEvent;
+import com.tickatch.notificationsenderservice.global.infrastructure.SendResultPublisher;
 import com.tickatch.notificationsenderservice.slack.domain.SlackSendHistory;
 import com.tickatch.notificationsenderservice.slack.domain.SlackSendHistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,8 @@ public class SlackHistoryService {
   private final SlackSendHistoryRepository smsSendHistoryRepository;
 
   private final SlackHistoryQueryService smsHistoryQueryService;
+
+  private final SendResultPublisher sendResultPublisher;
 
   public SlackSendHistory createDmHistory(Long notificationId, String slackUserId, String content) {
     SlackSendHistory history = SlackSendHistory.createDm(notificationId, slackUserId, content);
@@ -34,6 +38,8 @@ public class SlackHistoryService {
     history.markAsSuccess();
 
     smsSendHistoryRepository.save(history);
+
+    sendResultPublisher.publish(new SendResultEvent(history.getNotificationId(), true, null));
   }
 
   public void markAsFailed(Long historyId, String errorMessage) {
@@ -42,5 +48,8 @@ public class SlackHistoryService {
     history.markAsFailed(errorMessage);
 
     smsSendHistoryRepository.save(history);
+
+    sendResultPublisher.publish(
+        new SendResultEvent(history.getNotificationId(), false, errorMessage));
   }
 }

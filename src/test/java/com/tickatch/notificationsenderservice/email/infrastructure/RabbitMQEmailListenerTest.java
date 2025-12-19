@@ -1,6 +1,5 @@
 package com.tickatch.notificationsenderservice.email.infrastructure;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -80,8 +79,8 @@ class RabbitMQEmailListenerTest {
     doNothing().when(emailHistoryService).markAsFailed(anyLong(), anyString());
     when(messageResolver.resolve(any())).thenReturn("에러 메시지");
 
-    assertThatThrownBy(() -> rabbitMQEmailListener.emailSendRequest(integrationEvent))
-        .isInstanceOf(EmailSendException.class);
+    rabbitMQEmailListener.emailSendRequest(integrationEvent);
+
     verify(emailSender).send(any(EmailSendRequest.class));
     verify(emailHistoryService).markAsFailed(anyLong(), anyString());
   }

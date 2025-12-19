@@ -41,24 +41,22 @@ public class RabbitMQSlackListener {
         slackHistoryService.createChannelMessageHistory(
             payload.getNotificationId(), payload.getChannelId(), payload.getMessage());
 
-    send(payload, history.getId());
-
-    slackHistoryService.markAsSuccess(history.getId());
+    sendAndRecord(payload, history.getId());
   }
 
-  private void send(SlackChannelMessageSendRequestEvent payload, Long historyId) {
+  private void sendAndRecord(SlackChannelMessageSendRequestEvent payload, Long historyId) {
     try {
       slackSender.sendChannelMessage(
           new SlackChannelSendRequest(payload.getChannelId(), payload.getMessage()));
 
       log.info("Slack 채널[{}] 메세지 전송 완료", payload.getChannelId());
+
+      slackHistoryService.markAsSuccess(historyId);
     } catch (SlackSendException e) {
       log.error("Slack 채널[{}] 메세지 전송 실패", payload.getChannelId(), e);
 
       slackHistoryService.markAsFailed(
           historyId, messageResolver.resolve(e.getCode(), e.getErrorArgs()));
-
-      throw e;
     }
   }
 }

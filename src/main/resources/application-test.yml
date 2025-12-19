@@ -17,13 +17,13 @@ spring:
           starttls:
             enable: true
 
-sms:
+mobile:
   api:
-    key: ${SMS_API_KEY}
-    secret: ${SMS_API_SECRET}
-    domain: ${SMS_API_DOMAIN}
+    key: ${MOBILE_API_KEY}
+    secret: ${MOBILE_API_SECRET}
+    domain: ${MOBILE_API_DOMAIN}
   send:
-    from: ${SMS_SEND_FROM}
+    from: ${MOBILE_SEND_FROM}
 
 slack:
   bot:

@@ -13,6 +13,8 @@ import com.tickatch.notificationsenderservice.slack.infrastructure.dto.SlackOpen
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +27,10 @@ public class SlackMessageSender implements SlackSender {
 
   private static final String UNKNOWN_ERROR = "Unknown error occurred";
 
+  @Override
+  @Retryable(
+      retryFor = {SlackSendException.class},
+      backoff = @Backoff(delay = 5000, multiplier = 2.0, maxDelay = 10000))
   public void sendDirectMessage(SlackDmSendRequest request) {
     log.info("Slack DM 발송 시작: slackId={}", request.slackId());
 
