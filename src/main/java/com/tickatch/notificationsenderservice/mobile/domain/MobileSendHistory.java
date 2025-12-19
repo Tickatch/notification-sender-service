@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.email.domain;
+package com.tickatch.notificationsenderservice.mobile.domain;
 
 import com.tickatch.notificationsenderservice.global.domain.AbstractTimeEntity;
 import jakarta.persistence.Column;
@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 
 @Entity
-@Table(name = "p_email_send_history")
+@Table(name = "p_mobile_send_history")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EmailSendHistory extends AbstractTimeEntity {
+public class MobileSendHistory extends AbstractTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,48 +29,43 @@ public class EmailSendHistory extends AbstractTimeEntity {
   @Column(nullable = false)
   private Long notificationId;
 
-  @Column(nullable = false)
-  private String emailAddress;
-
-  @Column(nullable = false, length = 500)
-  private String subject;
+  @Column(nullable = false, length = 20)
+  private String phoneNumber;
 
   @Column(columnDefinition = "TEXT", nullable = false)
   private String content;
 
-  @Column(nullable = false)
-  private Boolean isHtml;
-
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private EmailSendStatus status;
+  private MobileSendStatus status;
 
   @Column(columnDefinition = "TEXT")
   private String errorMessage;
 
+  @Column(columnDefinition = "TEXT")
+  private String senderResponse;
+
   private LocalDateTime sentAt;
 
-  public static EmailSendHistory create(
-      Long notificationId, String emailAddress, String subject, String content, Boolean isHtml) {
-    EmailSendHistory history = new EmailSendHistory();
+  public static MobileSendHistory create(Long notificationId, String phoneNumber, String content) {
+    MobileSendHistory history = new MobileSendHistory();
 
     history.notificationId = Objects.requireNonNull(notificationId);
-    history.emailAddress = Objects.requireNonNull(emailAddress);
-    history.subject = Objects.requireNonNull(subject);
+    history.phoneNumber = Objects.requireNonNull(phoneNumber);
     history.content = Objects.requireNonNull(content);
-    history.isHtml = isHtml;
-    history.status = EmailSendStatus.PENDING;
+    history.status = MobileSendStatus.PENDING;
 
     return history;
   }
 
-  public void markAsSuccess() {
-    this.status = EmailSendStatus.SUCCESS;
+  public void markAsSuccess(String senderResponse) {
+    this.status = MobileSendStatus.SUCCESS;
     this.sentAt = LocalDateTime.now();
+    this.senderResponse = senderResponse;
   }
 
   public void markAsFailed(String errorMessage) {
-    this.status = EmailSendStatus.FAILED;
+    this.status = MobileSendStatus.FAILED;
     this.errorMessage = errorMessage;
   }
 
@@ -93,7 +88,7 @@ public class EmailSendHistory extends AbstractTimeEntity {
     if (thisEffectiveClass != oEffectiveClass) {
       return false;
     }
-    EmailSendHistory history = (EmailSendHistory) o;
+    MobileSendHistory history = (MobileSendHistory) o;
     return getId() != null && Objects.equals(getId(), history.getId());
   }
 

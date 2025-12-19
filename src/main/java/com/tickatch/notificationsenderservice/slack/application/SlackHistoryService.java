@@ -1,5 +1,7 @@
 package com.tickatch.notificationsenderservice.slack.application;
 
+import com.tickatch.notificationsenderservice.global.infrastructure.SendResultEvent;
+import com.tickatch.notificationsenderservice.global.infrastructure.SendResultPublisher;
 import com.tickatch.notificationsenderservice.slack.domain.SlackSendHistory;
 import com.tickatch.notificationsenderservice.slack.domain.SlackSendHistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,24 +17,29 @@ public class SlackHistoryService {
 
   private final SlackHistoryQueryService smsHistoryQueryService;
 
-  public SlackSendHistory createDmHistory(String slackUserId, String content) {
-    SlackSendHistory history = SlackSendHistory.createDm(slackUserId, content);
+  private final SendResultPublisher sendResultPublisher;
+
+  public SlackSendHistory createDmHistory(Long notificationId, String slackUserId, String content) {
+    SlackSendHistory history = SlackSendHistory.createDm(notificationId, slackUserId, content);
 
     return smsSendHistoryRepository.save(history);
   }
 
-  public SlackSendHistory createChannelMessageHistory(String channelId, String content) {
-    SlackSendHistory history = SlackSendHistory.createChannel(channelId, content);
+  public SlackSendHistory createChannelMessageHistory(
+      Long notificationId, String channelId, String content) {
+    SlackSendHistory history = SlackSendHistory.createChannel(notificationId, channelId, content);
 
     return smsSendHistoryRepository.save(history);
   }
 
-  public void markAsSuccess(Long historyId, String smtpResponse) {
+  public void markAsSuccess(Long historyId) {
     SlackSendHistory history = smsHistoryQueryService.find(historyId);
 
-    history.markAsSuccess(smtpResponse);
+    history.markAsSuccess();
 
     smsSendHistoryRepository.save(history);
+
+    sendResultPublisher.publish(new SendResultEvent(history.getNotificationId(), true, null));
   }
 
   public void markAsFailed(Long historyId, String errorMessage) {
@@ -41,5 +48,8 @@ public class SlackHistoryService {
     history.markAsFailed(errorMessage);
 
     smsSendHistoryRepository.save(history);
+
+    sendResultPublisher.publish(
+        new SendResultEvent(history.getNotificationId(), false, errorMessage));
   }
 }

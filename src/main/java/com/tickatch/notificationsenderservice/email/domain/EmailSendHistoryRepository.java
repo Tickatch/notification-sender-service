@@ -20,7 +20,6 @@ public interface EmailSendHistoryRepository extends Repository<EmailSendHistory,
     WHERE (
         :keyword IS NULL OR (
             upper(eh.emailAddress) LIKE CONCAT('%', upper(:keyword), '%')
-            OR upper(eh.senderResponse) LIKE CONCAT('%', upper(:keyword), '%')
             OR upper(eh.errorMessage) LIKE CONCAT('%', upper(:keyword), '%')
         )
     )

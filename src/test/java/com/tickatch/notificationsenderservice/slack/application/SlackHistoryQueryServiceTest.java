@@ -50,19 +50,19 @@ class SlackHistoryQueryServiceTest {
 
   @BeforeAll
   void setUpAll() {
-    history1 = createDm("U12345678", "테스트 메시지");
-    history2 = createDm("U12345678", "테스트 메시지");
-    history3 = createDm("U12345678", "테스트 메시지");
-    history4 = createDm("U12345678", "테스트 메시지");
-    history5 = createDm("U12345678", "테스트 메시지");
-    history6 = createCm("C12345678", "테스트 메시지");
-    history7 = createCm("C12345678", "테스트 메시지");
-    history8 = createCm("C12345678", "테스트 메시지");
-    history9 = createCm("C12345678", "테스트 메시지");
-    history10 = createCm("C12345678", "테스트 메시지");
+    history1 = createDm(1L, "U12345678", "테스트 메시지");
+    history2 = createDm(2L, "U12345678", "테스트 메시지");
+    history3 = createDm(3L, "U12345678", "테스트 메시지");
+    history4 = createDm(4L, "U12345678", "테스트 메시지");
+    history5 = createDm(5L, "U12345678", "테스트 메시지");
+    history6 = createCm(6L, "C12345678", "테스트 메시지");
+    history7 = createCm(7L, "C12345678", "테스트 메시지");
+    history8 = createCm(8L, "C12345678", "테스트 메시지");
+    history9 = createCm(9L, "C12345678", "테스트 메시지");
+    history10 = createCm(10L, "C12345678", "테스트 메시지");
 
-    history5.markAsSuccess("success");
-    history6.markAsSuccess("success");
+    history5.markAsSuccess();
+    history6.markAsSuccess();
     history7.markAsFailed("failed");
     history8.markAsFailed("failed");
 
@@ -72,14 +72,14 @@ class SlackHistoryQueryServiceTest {
     slackSendHistoryRepository.save(history8);
   }
 
-  private SlackSendHistory createDm(String slackUserId, String content) {
-    SlackSendHistory history = SlackSendHistory.createDm(slackUserId, content);
+  private SlackSendHistory createDm(Long notificationId, String slackUserId, String content) {
+    SlackSendHistory history = SlackSendHistory.createDm(notificationId, slackUserId, content);
 
     return slackSendHistoryRepository.save(history);
   }
 
-  private SlackSendHistory createCm(String channel, String content) {
-    SlackSendHistory history = SlackSendHistory.createChannel(channel, content);
+  private SlackSendHistory createCm(Long notificationId, String channel, String content) {
+    SlackSendHistory history = SlackSendHistory.createChannel(notificationId, channel, content);
 
     return slackSendHistoryRepository.save(history);
   }
@@ -151,17 +151,6 @@ class SlackHistoryQueryServiceTest {
 
     assertThat(histories.getContent())
         .containsExactlyInAnyOrder(history6, history7, history8, history9, history10);
-  }
-
-  @Test
-  void searchBySenderResponse() {
-    SlackSendHistorySearchCondition condition =
-        new SlackSendHistorySearchCondition(null, null, "success", null, null);
-    Pageable pageable = PageRequest.of(0, 10);
-
-    Page<SlackSendHistory> histories = slackHistoryQueryService.search(condition, pageable);
-
-    assertThat(histories.getContent()).containsExactlyInAnyOrder(history5, history6);
   }
 
   @Test

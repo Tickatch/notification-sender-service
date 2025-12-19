@@ -62,8 +62,8 @@ class EmailHistoryQueryServiceTest {
     history9 = create("search9@example.com", "테스트 이메일", "테스트 이메일입니다.");
     history10 = create("search0@example.com", "테스트 이메일", "테스트 이메일입니다.");
 
-    history5.markAsSuccess("success");
-    history6.markAsSuccess("success");
+    history5.markAsSuccess();
+    history6.markAsSuccess();
     history7.markAsFailed("failed");
     history8.markAsFailed("failed");
 
@@ -74,7 +74,7 @@ class EmailHistoryQueryServiceTest {
   }
 
   private EmailSendHistory create(String email, String subject, String content) {
-    EmailSendHistory history = EmailSendHistory.create(email, subject, content, false);
+    EmailSendHistory history = EmailSendHistory.create(1L, email, subject, content, false);
 
     return emailSendHistoryRepository.save(history);
   }
@@ -122,17 +122,6 @@ class EmailHistoryQueryServiceTest {
     Page<EmailSendHistory> histories = emailHistoryQueryService.search(condition, pageable);
 
     assertThat(histories.getContent()).containsExactlyInAnyOrder(history3, history4);
-  }
-
-  @Test
-  void searchBySenderResponse() {
-    EmailSendHistorySearchCondition condition =
-        new EmailSendHistorySearchCondition(null, "success", null, null);
-    Pageable pageable = PageRequest.of(0, 10);
-
-    Page<EmailSendHistory> histories = emailHistoryQueryService.search(condition, pageable);
-
-    assertThat(histories.getContent()).containsExactlyInAnyOrder(history5, history6);
   }
 
   @Test

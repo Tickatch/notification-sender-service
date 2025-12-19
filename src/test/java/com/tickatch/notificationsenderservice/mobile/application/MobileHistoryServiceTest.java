@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.slack.application;
+package com.tickatch.notificationsenderservice.mobile.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,8 +7,8 @@ import static org.mockito.Mockito.verify;
 
 import com.tickatch.notificationsenderservice.global.infrastructure.SendResultEvent;
 import com.tickatch.notificationsenderservice.global.infrastructure.SendResultPublisher;
-import com.tickatch.notificationsenderservice.slack.domain.SlackSendHistory;
-import com.tickatch.notificationsenderservice.slack.domain.SlackSendStatus;
+import com.tickatch.notificationsenderservice.mobile.domain.MobileSendHistory;
+import com.tickatch.notificationsenderservice.mobile.domain.MobileSendStatus;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,54 +20,44 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 @RequiredArgsConstructor
-class SlackHistoryServiceTest {
-  private final SlackHistoryService slackHistoryService;
+class MobileHistoryServiceTest {
+  private final MobileHistoryService mobileHistoryService;
 
-  private final SlackHistoryQueryService slackHistoryQueryService;
+  private final MobileHistoryQueryService mobileHistoryQueryService;
 
   private final EntityManager em;
 
   @MockitoBean private final SendResultPublisher sendResultPublisher;
 
-  SlackSendHistory history;
+  MobileSendHistory history;
 
   @BeforeEach
   void setUp() {
-    history = slackHistoryService.createDmHistory(1L, "U12345678", "테스트 메시지");
+    history = mobileHistoryService.createHistory(1L, "01012345678", "테스트 SMS");
 
     em.flush();
     em.clear();
   }
 
   @Test
-  void createDmHistory() {
-    SlackSendHistory history = slackHistoryService.createDmHistory(1L, "U12345678", "테스트 메시지");
+  void createHistory() {
+    MobileSendHistory history = mobileHistoryService.createHistory(1L, "01012345678", "테스트 SMS");
 
     assertThat(history.getId()).isNotNull();
-    assertThat(history.getSlackUserId()).isEqualTo("U12345678");
-  }
-
-  @Test
-  void createChannelMessageHistory() {
-    SlackSendHistory history =
-        slackHistoryService.createChannelMessageHistory(1L, "C12345678", "테스트 메시지");
-
-    assertThat(history.getId()).isNotNull();
-    assertThat(history.getChannelId()).isEqualTo("C12345678");
   }
 
   @Test
   void markAsSuccess() {
     doNothing().when(sendResultPublisher).publish(any(SendResultEvent.class));
 
-    slackHistoryService.markAsSuccess(history.getId());
+    mobileHistoryService.markAsSuccess(history.getId(), "success");
     em.flush();
     em.clear();
 
-    SlackSendHistory found = slackHistoryQueryService.find(history.getId());
+    MobileSendHistory found = mobileHistoryQueryService.find(history.getId());
 
-    assertThat(found.getStatus()).isEqualTo(SlackSendStatus.SUCCESS);
-    assertThat(found.getSentAt()).isNotNull();
+    assertThat(found.getSenderResponse()).isEqualTo("success");
+    assertThat(found.getStatus()).isEqualTo(MobileSendStatus.SUCCESS);
     verify(sendResultPublisher).publish(any(SendResultEvent.class));
   }
 
@@ -75,14 +65,14 @@ class SlackHistoryServiceTest {
   void markAsFailed() {
     doNothing().when(sendResultPublisher).publish(any(SendResultEvent.class));
 
-    slackHistoryService.markAsFailed(history.getId(), "failed");
+    mobileHistoryService.markAsFailed(history.getId(), "failed");
     em.flush();
     em.clear();
 
-    SlackSendHistory found = slackHistoryQueryService.find(history.getId());
+    MobileSendHistory found = mobileHistoryQueryService.find(history.getId());
 
     assertThat(found.getErrorMessage()).isEqualTo("failed");
-    assertThat(found.getStatus()).isEqualTo(SlackSendStatus.FAILED);
+    assertThat(found.getStatus()).isEqualTo(MobileSendStatus.FAILED);
     verify(sendResultPublisher).publish(any(SendResultEvent.class));
   }
 }

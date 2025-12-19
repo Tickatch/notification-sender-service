@@ -2,6 +2,7 @@ package com.tickatch.notificationsenderservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.retry.annotation.EnableRetry;
 
 /**
  * Spring Boot 애플리케이션의 진입점 클래스.
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 1.0.0
  */
 @SpringBootApplication
+@EnableRetry
 public class NotificationSenderServiceApplication {
 
   /**
