@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 
 @Entity
-@Table(name = "p_sms_send_history")
+@Table(name = "p_mobile_send_history")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MobileSendHistory extends AbstractTimeEntity {
