@@ -1,0 +1,30 @@
+spring:
+  config:
+    import:
+      - 'optional:file:.env[.properties]'
+  cloud:
+    config:
+      enabled: false
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+mobile:
+  api:
+    key: ${MOBILE_API_KEY}
+    secret: ${MOBILE_API_SECRET}
+    domain: ${MOBILE_API_DOMAIN}
+  send:
+    from: ${MOBILE_SEND_FROM}
+
+slack:
+  bot:
+    token: ${SLACK_BOT_TOKEN}

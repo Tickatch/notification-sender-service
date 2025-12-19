@@ -19,6 +19,12 @@ spring:
     compose:
       lifecycle-management: start_only  # docker 생명 주기 (none, start-only, start-and-stop)
 
+  # ===== default schema 설정 =====
+  jpa:
+    properties:
+      hibernate:
+        default_schema: notification_sender
+
   # ===== Config Server 연동 =====
   config:
     import: optional:configserver:${CONFIG_SERVER_URL:https://www.pinjun.xyz/config}
@@ -48,6 +54,19 @@ spring:
         max-attempts: 3             # 최대 재시도 횟수
         max-interval: 2000          # 최대 재시도 간격 (2초)
         multiplier: 1.1             # 재시도 간격 증가율
+
+  # ===== 메일 전송 설정 =====
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 # ========================================
 # Eureka Client 설정
@@ -83,3 +102,21 @@ eureka:
 # ========================================
 server:
   port: ${SERVER_PORT:8080}
+
+# ========================================
+# Mobile 설정
+# ========================================
+mobile:
+  api:
+    key: ${MOBILE_API_KEY}
+    secret: ${MOBILE_API_SECRET}
+    domain: ${MOBILE_API_DOMAIN}
+  send:
+    from: ${MOBILE_SEND_FROM}
+
+# ========================================
+# Slack 설정
+# ========================================
+slack:
+  bot:
+    token: ${SLACK_BOT_TOKEN}
