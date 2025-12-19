@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.sms.domain.exception;
+package com.tickatch.notificationsenderservice.mobile.domain.exception;
 
 import io.github.tickatch.common.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,15 @@ import org.springframework.http.HttpStatus;
  * @since 1.0.0
  */
 @RequiredArgsConstructor
-public enum SmsSendErrorCode implements ErrorCode {
+public enum MobileSendErrorCode implements ErrorCode {
+  MOBILE_INVALID_API_KEY(HttpStatus.INTERNAL_SERVER_ERROR.value(), "MOBILE_INVALID_API_KEY"),
   SMS_SEND_UNKNOWN(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SMS_SEND_UNKNOWN"),
-  SMS_INVALID_API_KEY(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SMS_INVALID_API_KEY"),
   SMS_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "SMS_SEND_FAILED"),
+  MMS_IMAGE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "MMS_IMAGE_UPLOAD_FAILED"),
+  MMS_TEMP_FILE_CREATION_FAILED(
+      HttpStatus.INTERNAL_SERVER_ERROR.value(), "MMS_TEMP_FILE_CREATION_FAILED"),
+  MMS_IMAGE_SIZE_EXCEEDED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "MMS_IMAGE_SIZE_EXCEEDED"),
+  MMS_INVALID_IMAGE_FORMAT(HttpStatus.INTERNAL_SERVER_ERROR.value(), "MMS_INVALID_IMAGE_FORMAT"),
   ;
 
   private final int status;

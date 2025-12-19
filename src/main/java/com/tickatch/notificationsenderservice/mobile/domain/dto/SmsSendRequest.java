@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.sms.domain.dto;
+package com.tickatch.notificationsenderservice.mobile.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

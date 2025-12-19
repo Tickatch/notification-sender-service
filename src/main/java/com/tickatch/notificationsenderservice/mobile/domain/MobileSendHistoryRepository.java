@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.sms.domain;
+package com.tickatch.notificationsenderservice.mobile.domain;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -8,15 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
-public interface SmsSendHistoryRepository extends Repository<SmsSendHistory, Long> {
+public interface MobileSendHistoryRepository extends Repository<MobileSendHistory, Long> {
 
-  SmsSendHistory save(SmsSendHistory history);
+  MobileSendHistory save(MobileSendHistory history);
 
-  Optional<SmsSendHistory> findById(Long id);
+  Optional<MobileSendHistory> findById(Long id);
 
   @Query(
       """
-    SELECT sh FROM SmsSendHistory sh
+    SELECT sh FROM MobileSendHistory sh
     WHERE (
         :keyword IS NULL OR (
             upper(sh.phoneNumber) LIKE CONCAT('%', upper(:keyword), '%')
@@ -28,8 +28,8 @@ public interface SmsSendHistoryRepository extends Repository<SmsSendHistory, Lon
     AND ( :startDate IS NULL OR sh.createdAt >= :startDate )
     AND ( :endDate IS NULL OR sh.createdAt <= :endDate )
   """)
-  Page<SmsSendHistory> search(
-      @Param("status") SmsSendStatus status,
+  Page<MobileSendHistory> search(
+      @Param("status") MobileSendStatus status,
       @Param("keyword") String keyword,
       @Param("startDate") LocalDateTime startDate,
       @Param("endDate") LocalDateTime endDate,

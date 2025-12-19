@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.sms.infrastructure;
+package com.tickatch.notificationsenderservice.mobile.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -9,9 +9,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.tickatch.notificationsenderservice.sms.domain.dto.SmsSendRequest;
-import com.tickatch.notificationsenderservice.sms.domain.exception.SmsSendErrorCode;
-import com.tickatch.notificationsenderservice.sms.domain.exception.SmsSendException;
+import com.tickatch.notificationsenderservice.mobile.domain.dto.SmsSendRequest;
+import com.tickatch.notificationsenderservice.mobile.domain.exception.MobileSendErrorCode;
+import com.tickatch.notificationsenderservice.mobile.domain.exception.MobileSendException;
 import net.nurigo.sdk.message.exception.NurigoBadRequestException;
 import net.nurigo.sdk.message.exception.NurigoInvalidApiKeyException;
 import net.nurigo.sdk.message.exception.NurigoUnknownException;
@@ -26,11 +26,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
-class SolapiSmsSenderTest {
+class SolapiMobileSenderTest {
 
   @Mock private DefaultMessageService messageService;
 
-  private SolapiSmsSender smsSender;
+  private SolapiMobileSender smsSender;
 
   private static final String API_KEY = "test-api-key";
   private static final String API_SECRET = "test-api-secret";
@@ -41,7 +41,7 @@ class SolapiSmsSenderTest {
 
   @BeforeEach
   void setUp() {
-    smsSender = new SolapiSmsSender(API_KEY, API_SECRET, DOMAIN, FROM_NUMBER);
+    smsSender = new SolapiMobileSender(API_KEY, API_SECRET, DOMAIN, FROM_NUMBER);
     ReflectionTestUtils.setField(smsSender, "messageService", messageService);
     request = new SmsSendRequest("01098765432", "테스트 메시지입니다.");
   }
@@ -68,8 +68,8 @@ class SolapiSmsSenderTest {
             });
 
     assertThatThrownBy(() -> smsSender.send(request))
-        .isInstanceOf(SmsSendException.class)
-        .hasFieldOrPropertyWithValue("errorCode", SmsSendErrorCode.SMS_SEND_FAILED);
+        .isInstanceOf(MobileSendException.class)
+        .hasFieldOrPropertyWithValue("errorCode", MobileSendErrorCode.SMS_SEND_FAILED);
 
     verify(messageService, times(1)).sendOne(any(SingleMessageSendingRequest.class));
   }
@@ -84,8 +84,8 @@ class SolapiSmsSenderTest {
             });
 
     assertThatThrownBy(() -> smsSender.send(request))
-        .isInstanceOf(SmsSendException.class)
-        .hasFieldOrPropertyWithValue("errorCode", SmsSendErrorCode.SMS_INVALID_API_KEY);
+        .isInstanceOf(MobileSendException.class)
+        .hasFieldOrPropertyWithValue("errorCode", MobileSendErrorCode.MOBILE_INVALID_API_KEY);
 
     verify(messageService, times(1)).sendOne(any(SingleMessageSendingRequest.class));
   }
@@ -100,8 +100,8 @@ class SolapiSmsSenderTest {
             });
 
     assertThatThrownBy(() -> smsSender.send(request))
-        .isInstanceOf(SmsSendException.class)
-        .hasFieldOrPropertyWithValue("errorCode", SmsSendErrorCode.SMS_SEND_UNKNOWN);
+        .isInstanceOf(MobileSendException.class)
+        .hasFieldOrPropertyWithValue("errorCode", MobileSendErrorCode.SMS_SEND_UNKNOWN);
 
     verify(messageService, times(1)).sendOne(any(SingleMessageSendingRequest.class));
   }
@@ -112,8 +112,8 @@ class SolapiSmsSenderTest {
     given(messageService.sendOne(any(SingleMessageSendingRequest.class))).willThrow(exception);
 
     assertThatThrownBy(() -> smsSender.send(request))
-        .isInstanceOf(SmsSendException.class)
-        .hasFieldOrPropertyWithValue("errorCode", SmsSendErrorCode.SMS_SEND_UNKNOWN)
+        .isInstanceOf(MobileSendException.class)
+        .hasFieldOrPropertyWithValue("errorCode", MobileSendErrorCode.SMS_SEND_UNKNOWN)
         .hasCause(exception);
 
     verify(messageService, times(1)).sendOne(any(SingleMessageSendingRequest.class));

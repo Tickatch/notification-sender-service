@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.sms.domain;
+package com.tickatch.notificationsenderservice.mobile.domain;
 
 import com.tickatch.notificationsenderservice.global.domain.AbstractTimeEntity;
 import jakarta.persistence.Column;
@@ -20,7 +20,7 @@ import org.hibernate.proxy.HibernateProxy;
 @Table(name = "p_sms_send_history")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SmsSendHistory extends AbstractTimeEntity {
+public class MobileSendHistory extends AbstractTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class SmsSendHistory extends AbstractTimeEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private SmsSendStatus status;
+  private MobileSendStatus status;
 
   @Column(columnDefinition = "TEXT")
   private String errorMessage;
@@ -47,25 +47,25 @@ public class SmsSendHistory extends AbstractTimeEntity {
 
   private LocalDateTime sentAt;
 
-  public static SmsSendHistory create(Long notificationId, String phoneNumber, String content) {
-    SmsSendHistory history = new SmsSendHistory();
+  public static MobileSendHistory create(Long notificationId, String phoneNumber, String content) {
+    MobileSendHistory history = new MobileSendHistory();
 
     history.notificationId = Objects.requireNonNull(notificationId);
     history.phoneNumber = Objects.requireNonNull(phoneNumber);
     history.content = Objects.requireNonNull(content);
-    history.status = SmsSendStatus.PENDING;
+    history.status = MobileSendStatus.PENDING;
 
     return history;
   }
 
   public void markAsSuccess(String senderResponse) {
-    this.status = SmsSendStatus.SUCCESS;
+    this.status = MobileSendStatus.SUCCESS;
     this.sentAt = LocalDateTime.now();
     this.senderResponse = senderResponse;
   }
 
   public void markAsFailed(String errorMessage) {
-    this.status = SmsSendStatus.FAILED;
+    this.status = MobileSendStatus.FAILED;
     this.errorMessage = errorMessage;
   }
 
@@ -88,7 +88,7 @@ public class SmsSendHistory extends AbstractTimeEntity {
     if (thisEffectiveClass != oEffectiveClass) {
       return false;
     }
-    SmsSendHistory history = (SmsSendHistory) o;
+    MobileSendHistory history = (MobileSendHistory) o;
     return getId() != null && Objects.equals(getId(), history.getId());
   }
 

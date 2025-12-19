@@ -30,6 +30,9 @@ public class RabbitMQConfig {
   @Value("${messaging.sms.exchange:tickatch.sms}")
   private String smsExchange;
 
+  @Value("${messaging.mms.exchange:tickatch.mms}")
+  private String mmsExchange;
+
   @Value("${messaging.slack.exchange:tickatch.slack}")
   private String slackExchange;
 
@@ -37,11 +40,15 @@ public class RabbitMQConfig {
 
   public static final String QUEUE_SMS = "tickatch.sms.queue";
 
+  public static final String QUEUE_MMS = "tickatch.mms.queue";
+
   public static final String QUEUE_SLACK = "tickatch.slack.queue";
 
   public static final String ROUTING_KEY_EMAIL = "email.send";
 
   public static final String ROUTING_KEY_SMS = "sms.send";
+
+  public static final String ROUTING_KEY_MMS = "mms.send";
 
   public static final String ROUTING_KEY_SLACK = "slack.send";
 
@@ -187,6 +194,78 @@ public class RabbitMQConfig {
     return BindingBuilder.bind(deadLetterSmsQueue)
         .to(deadLetterSmsExchange)
         .with("dlq." + ROUTING_KEY_SMS);
+  }
+
+  /**
+   * MMS 관련 이벤트를 처리하는 Topic Exchange 설정.
+   *
+   * @return MMS 이벤트용 Exchange
+   */
+  @Bean
+  public TopicExchange mmsExchange() {
+    return ExchangeBuilder.topicExchange(mmsExchange).durable(true).build();
+  }
+
+  /**
+   * MMS 메시지 큐를 생성한다.
+   *
+   * <p>DLX 설정을 포함하여 실패 시 Dead Letter Queue로 이동할 수 있도록 구성한다.
+   *
+   * @return MMS 큐
+   */
+  @Bean
+  public Queue mmsQueue() {
+    return QueueBuilder.durable(QUEUE_MMS)
+        .withArgument("x-dead-letter-exchange", mmsExchange + ".dlx")
+        .withArgument("x-dead-letter-routing-key", "dlq." + ROUTING_KEY_MMS)
+        .build();
+  }
+
+  /**
+   * MMS 관련 메시지를 큐와 Exchange에 바인딩한다.
+   *
+   * @param mmsQueue MMS 큐
+   * @param mmsExchange MMS 이벤트 처리 Exchange
+   * @return 바인딩 객체
+   */
+  @Bean
+  public Binding mmsBinding(Queue mmsQueue, TopicExchange mmsExchange) {
+    return BindingBuilder.bind(mmsQueue).to(mmsExchange).with(ROUTING_KEY_MMS);
+  }
+
+  /**
+   * MMS 이벤트 Dead Letter Exchange 설정.
+   *
+   * @return Dead Letter Exchange
+   */
+  @Bean
+  public TopicExchange deadLetterMmsExchange() {
+    return ExchangeBuilder.topicExchange(mmsExchange + ".dlx").durable(true).build();
+  }
+
+  /**
+   * Dead Letter 상태의 MMS 메시지를 처리하기 위한 큐 생성.
+   *
+   * @return Dead Letter Queue
+   */
+  @Bean
+  public Queue deadLetterMmsQueue() {
+    return QueueBuilder.durable(QUEUE_MMS + ".dlq").build();
+  }
+
+  /**
+   * MMS Dead Letter 메시지를 처리하기 위한 바인딩 설정.
+   *
+   * @param deadLetterMmsQueue MMS DLQ 큐
+   * @param deadLetterMmsExchange MMS DLX Exchange
+   * @return DLQ 바인딩 객체
+   */
+  @Bean
+  public Binding deadLetterMmsBinding(
+      Queue deadLetterMmsQueue, TopicExchange deadLetterMmsExchange) {
+    return BindingBuilder.bind(deadLetterMmsQueue)
+        .to(deadLetterMmsExchange)
+        .with("dlq." + ROUTING_KEY_MMS);
   }
 
   /**

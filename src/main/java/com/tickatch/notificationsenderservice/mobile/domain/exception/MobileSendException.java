@@ -1,4 +1,4 @@
-package com.tickatch.notificationsenderservice.sms.domain.exception;
+package com.tickatch.notificationsenderservice.mobile.domain.exception;
 
 import io.github.tickatch.common.error.BusinessException;
 import io.github.tickatch.common.error.ErrorCode;
@@ -11,14 +11,14 @@ import io.github.tickatch.common.error.ErrorCode;
  * @author 김형섭
  * @since 1.0.0
  */
-public class SmsSendException extends BusinessException {
+public class MobileSendException extends BusinessException {
 
   /**
    * SMS 전송 예외 생성자.
    *
    * @param errorCode SMS 전송 예외 코드
    */
-  public SmsSendException(ErrorCode errorCode) {
+  public MobileSendException(ErrorCode errorCode) {
     super(errorCode);
   }
 
@@ -28,7 +28,7 @@ public class SmsSendException extends BusinessException {
    * @param errorCode SMS 전송 예외 코드
    * @param errorArgs 오류 메시지에 바인딩될 인자 값
    */
-  public SmsSendException(ErrorCode errorCode, Object... errorArgs) {
+  public MobileSendException(ErrorCode errorCode, Object... errorArgs) {
     super(errorCode, errorArgs);
   }
 
@@ -38,7 +38,7 @@ public class SmsSendException extends BusinessException {
    * @param errorCode SMS 전송 예외 코드
    * @param throwable 예외 원인
    */
-  public SmsSendException(ErrorCode errorCode, Throwable throwable) {
+  public MobileSendException(ErrorCode errorCode, Throwable throwable) {
     super(errorCode, throwable);
   }
 }

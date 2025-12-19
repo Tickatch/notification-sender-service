@@ -1,12 +1,8 @@
 package com.tickatch.notificationsenderservice;
 
 import com.tickatch.notificationsenderservice.email.domain.EmailSender;
+import com.tickatch.notificationsenderservice.mobile.domain.MobileSender;
 import com.tickatch.notificationsenderservice.slack.domain.SlackSender;
-import com.tickatch.notificationsenderservice.slack.domain.dto.SlackChannelSendRequest;
-import com.tickatch.notificationsenderservice.slack.domain.dto.SlackDmSendRequest;
-import com.tickatch.notificationsenderservice.sms.domain.SmsSender;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SmsTest {
 
   private final EmailSender emailSender;
-  private final SmsSender smsSender;
+  private final MobileSender mobileSender;
   private final SlackSender slackDmSender;
 
   @Test
@@ -35,10 +31,10 @@ public class SmsTest {
 
   @Test
   void slackTest() {
-    String userId = "U0A39KC0VLL";
-    String chanelId = "C0A30AACGN8";
-    String message = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE) + "알림 메시지";
-    slackDmSender.sendDirectMessage(new SlackDmSendRequest(userId, message));
-    slackDmSender.sendChannelMessage(new SlackChannelSendRequest(chanelId, message));
+    //    String userId = "U0A39KC0VLL";
+    //    String chanelId = "C0A30AACGN8";
+    //    String message = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE) + "알림 메시지";
+    //    slackDmSender.sendDirectMessage(new SlackDmSendRequest(userId, message));
+    //    slackDmSender.sendChannelMessage(new SlackChannelSendRequest(chanelId, message));
   }
 }
