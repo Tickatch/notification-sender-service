@@ -8,7 +8,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.tickatch.notificationsenderservice.email.domain.EmailSendRequest;
+import com.tickatch.notificationsenderservice.email.domain.dto.EmailSendRequest;
 import com.tickatch.notificationsenderservice.email.domain.exception.EmailSendErrorCode;
 import com.tickatch.notificationsenderservice.email.domain.exception.EmailSendException;
 import jakarta.mail.internet.MimeMessage;

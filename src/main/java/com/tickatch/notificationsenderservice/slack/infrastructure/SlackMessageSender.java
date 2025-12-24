@@ -1,8 +1,8 @@
 package com.tickatch.notificationsenderservice.slack.infrastructure;
 
-import com.tickatch.notificationsenderservice.slack.domain.SlackChanelSendRequest;
-import com.tickatch.notificationsenderservice.slack.domain.SlackDmSendRequest;
 import com.tickatch.notificationsenderservice.slack.domain.SlackSender;
+import com.tickatch.notificationsenderservice.slack.domain.dto.SlackChannelSendRequest;
+import com.tickatch.notificationsenderservice.slack.domain.dto.SlackDmSendRequest;
 import com.tickatch.notificationsenderservice.slack.domain.exception.SlackSendErrorCode;
 import com.tickatch.notificationsenderservice.slack.domain.exception.SlackSendException;
 import com.tickatch.notificationsenderservice.slack.infrastructure.dto.AbstractSlackResponse;
@@ -13,6 +13,8 @@ import com.tickatch.notificationsenderservice.slack.infrastructure.dto.SlackOpen
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +27,10 @@ public class SlackMessageSender implements SlackSender {
 
   private static final String UNKNOWN_ERROR = "Unknown error occurred";
 
+  @Override
+  @Retryable(
+      retryFor = {SlackSendException.class},
+      backoff = @Backoff(delay = 5000, multiplier = 2.0, maxDelay = 10000))
   public void sendDirectMessage(SlackDmSendRequest request) {
     log.info("Slack DM 발송 시작: slackId={}", request.slackId());
 
@@ -36,12 +42,12 @@ public class SlackMessageSender implements SlackSender {
   }
 
   @Override
-  public void sendChanelMessage(SlackChanelSendRequest request) {
-    log.info("Slack 채널 메시지 발송 시작: channelId={}", request.chanelId());
+  public void sendChannelMessage(SlackChannelSendRequest request) {
+    log.info("Slack 채널 메시지 발송 시작: channelId={}", request.channelId());
 
-    sendMessageToChannel(request.chanelId(), request.message());
+    sendMessageToChannel(request.channelId(), request.message());
 
-    log.info("Slack 채널 메시지 발송 성공: channelId={}", request.chanelId());
+    log.info("Slack 채널 메시지 발송 성공: channelId={}", request.channelId());
   }
 
   private String openDirectMessageChannel(String userId) {
@@ -49,7 +55,7 @@ public class SlackMessageSender implements SlackSender {
         slackFeignClient.openDirectMessageChannel(
             new SlackConversationOpenRequest(List.of(userId)));
 
-    validateResponse(response, SlackSendErrorCode.SLACK_CHANEL_CREATION_FAILED);
+    validateResponse(response, SlackSendErrorCode.SLACK_CHANNEL_CREATION_FAILED);
 
     return response.getChannel().id();
   }

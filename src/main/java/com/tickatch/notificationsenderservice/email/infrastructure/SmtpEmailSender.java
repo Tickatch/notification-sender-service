@@ -1,7 +1,7 @@
 package com.tickatch.notificationsenderservice.email.infrastructure;
 
-import com.tickatch.notificationsenderservice.email.domain.EmailSendRequest;
 import com.tickatch.notificationsenderservice.email.domain.EmailSender;
+import com.tickatch.notificationsenderservice.email.domain.dto.EmailSendRequest;
 import com.tickatch.notificationsenderservice.email.domain.exception.EmailSendErrorCode;
 import com.tickatch.notificationsenderservice.email.domain.exception.EmailSendException;
 import jakarta.mail.MessagingException;
@@ -34,8 +34,8 @@ public class SmtpEmailSender implements EmailSender {
 
   @Override
   @Retryable(
-      retryFor = {MailException.class},
-      backoff = @Backoff(delay = 1000, multiplier = 2))
+      retryFor = {EmailSendException.class},
+      backoff = @Backoff(delay = 30000, multiplier = 2.0, maxDelay = 60000))
   public void send(EmailSendRequest request) {
     MimeMessage message = createMessage(request);
 
